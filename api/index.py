@@ -11,6 +11,10 @@ def home():
 def about():
     return 'About'
 
+@app.route('/test')
+def test():
+    return 'Test'
+
 api_key = "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"
 
 openai.api_key = api_key
