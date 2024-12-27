@@ -15,7 +15,7 @@ def about():
 def test():
     return 'Test'
 
-api_key = "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"
+api_key = "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"
 
 openai.api_key = api_key
 lang = 'en'
