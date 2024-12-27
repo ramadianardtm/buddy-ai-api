@@ -21,7 +21,7 @@ openai.api_key = api_key
 lang = 'en'
 conversation_histories = {}
 
-@app.post('/process-ai', methods=['POST'])
+@app.route('/process-ai', methods=['POST'])
 def process_ai():
     try: 
         data = request.json
