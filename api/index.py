@@ -1,6 +1,4 @@
 from flask import Flask, jsonify, request
-from dotenv import load_dotenv
-import os
 import openai
 
 app = Flask(__name__)
@@ -13,11 +11,8 @@ def home():
 def about():
     return 'About'
 
-load_dotenv()
+api_key = "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"
 
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OpenAI API Key not found. Please check your .env file.")
 openai.api_key = api_key
 lang = 'en'
 conversation_histories = {}
