@@ -26,8 +26,8 @@ def process_ai():
     try:
         data = request.json
         user_id = data.get('user_id')
-        audio_command = data.get('command')
-        ai_name = data.get('ai_name', 'Friday')
+        audio_command = data.get('command').lower()
+        ai_name = data.get('ai_name', 'Friday').lower()
 
         if not user_id:
             return jsonify({"error": "User ID is required."}), 400
