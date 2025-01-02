@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 import openai
+import time
+import threading
 
 app = Flask(__name__)
 
@@ -20,6 +22,8 @@ api_key = "sk-proj-j69SpDuzyMCxt-SdC0mC-Umuf8DIw0NENVJYhyVxIeTYLyFY-ZHcIeM1xP5WE
 openai.api_key = api_key
 lang = 'en'
 conversation_histories = {}
+last_interaction_times = {}
+HISTORY_TIMEOUT = 15 * 60
 
 @app.route('/process-ai', methods=['POST'])
 def process_ai():
@@ -31,6 +35,9 @@ def process_ai():
 
         if not user_id:
             return jsonify({"error": "User ID is required."}), 400
+        
+        # Record the current timestamp for the user
+        last_interaction_times[user_id] = time.time()
 
         # Initialize user conversation history if not present
         if user_id not in conversation_histories:
@@ -60,6 +67,24 @@ def process_ai():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+# Background thread to clean up old conversation histories
+def clear_old_histories():
+    while True:
+        current_time = time.time()
+        to_delete = [
+            user_id
+            for user_id, last_time in last_interaction_times.items()
+            if current_time - last_time > HISTORY_TIMEOUT
+        ]
+        for user_id in to_delete:
+            conversation_histories.pop(user_id, None)
+            last_interaction_times.pop(user_id, None)
+        time.sleep(60)  # Check every minute
+        
+# Start the cleanup thread
+cleanup_thread = threading.Thread(target=clear_old_histories, daemon=True)
+cleanup_thread.start()
 
 if __name__ == '__main__':
     app.run(debug=True)
