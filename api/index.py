@@ -42,7 +42,7 @@ def process_ai():
         # Initialize user conversation history if not present
         if user_id not in conversation_histories:
             conversation_histories[user_id] = [
-                {"role": "system", "content": f"You are an AI assistant named {ai_name}. Always remember any user information provided during the conversation. Always provide helpful, friendly, and polite responses, with a tone that feels warm and approachable. Keep your explanations concise but engaging."}
+                {"role": "system", "content": f"You are an AI assistant named {ai_name}. Always remember any user information provided during the conversation. Always provide helpful, friendly, and polite responses, with a tone that feels warm and approachable. Keep your explanations concise but engaging. Make the answer simpler and short."}
             ]
 
         # Add user input to their conversation history
